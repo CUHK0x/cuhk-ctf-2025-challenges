@@ -1,0 +1,17 @@
+# Use a lightweight Python base image
+FROM python:3.11-slim
+
+# Ensure no Python output buffering (helpful for real-time logs)
+ENV PYTHONUNBUFFERED=1
+
+# Set working directory
+WORKDIR /app
+
+# Copy server code into container
+COPY server.py /app/
+
+# Expose internal server port 
+EXPOSE 12345
+
+# Run the server
+CMD ["python", "server.py"]

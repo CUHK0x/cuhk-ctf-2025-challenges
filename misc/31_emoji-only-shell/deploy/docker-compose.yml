@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  emoji-shell:
+    build: .
+    container_name: emoji-shell
+    ports:
+      - "25031:12345"   # host:container mapping
+    restart: unless-stopped

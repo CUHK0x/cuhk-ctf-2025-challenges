@@ -1,0 +1,26 @@
+{
+  "name": "tuning-joyride",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc && vite build --config vite.config.js",
+    "preview": "vite preview --host 0.0.0.0",
+    "pkg-challenge": "zip -r tuning-joyride-chall.zip dist/*",
+    "generate-data": "tsx scripts/generateData.ts src/circuits.json"
+  },
+  "devDependencies": {
+    "@types/fontkit": "^2.0.8",
+    "@types/seedrandom": "^3.0.8",
+    "fontkit": "^2.0.4",
+    "seedrandom": "^3.0.5",
+    "terser": "^5.43.1",
+    "tsx": "^4.20.3",
+    "typescript": "~5.8.3",
+    "vite": "^7.0.4"
+  },
+  "dependencies": {
+    "bootstrap-icons": "^1.13.1"
+  }
+}

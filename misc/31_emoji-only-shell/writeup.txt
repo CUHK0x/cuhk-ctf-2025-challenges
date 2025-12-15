@@ -1,0 +1,18 @@
+Player will notice the weird text when entering the emoji-only shell. Use ROT 13 to decrypt it and will get "Try hint for hint."
+
+Magic emoji is suggested when "hint" is typed. Checking the two leak emojis, players will know the magic emoji is 🪄.   
+Keep on enter 🪄 until the output is repeated. Those are the recipe hints.
+
+Use base64 to decrypt the 5 hints, and enter the recipe in the correct format and order.
+Players can trace their progress by the log emoji: 📝
+
+The secret recipe order is as follows:
+1. 🔪 🍅
+2. 👊 🥚
+3. 🥣 🥚
+4. 🔥 🥚 60
+5. 🔥 🍅 60
+6. ⏳ 10
+7. 🫱 🍽️
+
+After all 7 steps are entered correctly, the server will reply with the flag!

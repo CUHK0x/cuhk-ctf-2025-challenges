@@ -1,0 +1,19 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Ignore flag file (so you don't accidentally push the real flag)
+flag.txt
+
+# Optional editor/temp files
+*.swp
+*.tmp
+.DS_Store
+
+# Ignore virtual environments (if ever created)
+venv/
+env/
+
+# Docker build artifacts (optional, if you create any locally)
+*.log
+*.tar

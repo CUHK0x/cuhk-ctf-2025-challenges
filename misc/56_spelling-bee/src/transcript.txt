@@ -1,0 +1,6 @@
+Person 1: (Japanese) すみません、フラグは何ですか？ (Excuse, what is the flag?)
+Person 2: (Spanish) cuhk25ctf{el_rgqido_z0rro_marron_sa1ta_s8b73_juan_31_perr6_de_mexic0_wvwy}
+Person 1: (German) Ich verstehe nur Bahnhof. (I only understand train station.)
+Person 2: (Spanish) Bien. (Good.)
+Person 1: (Japanese) 大丈夫です。じゃ、またね！ (It's okay. Well then, see you later!)
+Person 2: (Spanish) Adiós. (Bye.)

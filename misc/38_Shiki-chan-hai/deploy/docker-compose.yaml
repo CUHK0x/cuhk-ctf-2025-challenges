@@ -1,0 +1,11 @@
+services:
+  chocolate:
+    build: .
+    ports:
+      - 25038:1337
+    networks:
+      - default
+    restart: always
+
+networks:
+  default:
