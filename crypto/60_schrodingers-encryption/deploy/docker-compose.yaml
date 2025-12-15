@@ -1,0 +1,10 @@
+services:
+  schrodingers-encryption:
+    build: .
+    ports:
+      - 25060:1337
+    networks:
+      - default
+
+networks:
+  default:

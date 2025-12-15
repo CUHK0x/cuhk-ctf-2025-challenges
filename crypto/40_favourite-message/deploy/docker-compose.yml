@@ -1,0 +1,5 @@
+services:
+  favourite-message:
+    build: .
+    ports:
+      - 25040:3000

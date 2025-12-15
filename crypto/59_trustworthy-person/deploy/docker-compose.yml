@@ -1,0 +1,5 @@
+services:
+  trustworthy-person:
+    build: .
+    ports:
+      - 25059:3000

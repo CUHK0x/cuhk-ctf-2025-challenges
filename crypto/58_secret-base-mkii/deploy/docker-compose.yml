@@ -1,0 +1,5 @@
+services:
+  secret-base-mkii:
+    build: .
+    ports:
+      - 25058:3000

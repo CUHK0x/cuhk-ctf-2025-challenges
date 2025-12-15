@@ -1,0 +1,5 @@
+services:
+  secret-base:
+    build: .
+    ports:
+      - 25057:3000
