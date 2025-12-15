@@ -1,0 +1,1 @@
+message: 500Hz, 1000Hz , bit: 50ms
