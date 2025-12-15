@@ -1,0 +1,13 @@
+# Terraform
+deploy/.terraform/
+deploy/.terraform.lock.hcl
+deploy/terraform.tfstate*
+deploy/*.tfvars
+
+# Secrets and rendered files
+creds.json
+nakime.jwt
+role.arn
+_cleanroom/
+_codex_out/
+AGENTS.md

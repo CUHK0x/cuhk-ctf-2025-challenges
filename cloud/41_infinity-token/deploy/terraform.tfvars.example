@@ -1,0 +1,8 @@
+# Copy to deploy/terraform.tfvars and fill with real values before deploying.
+kubeconfig_path        = "/absolute/path/to/your/kubeconfig"
+aws_region             = "us-east-1"
+eks_oidc_provider_arn  = "arn:aws:iam::<ACCOUNT_ID>:oidc-provider/oidc.eks.<region>.amazonaws.com/id/<OIDC_ID>"
+s3_bucket_name         = "ds-k8s-infinity-flag-unique-<suffix>"
+flag_value             = "REPLACE_WITH_EVENT_FLAG"
+cluster_server         = "https://<EKS-ENDPOINT>"
+cluster_ca_base64      = "BASE64_OF_CLUSTER_CA"
