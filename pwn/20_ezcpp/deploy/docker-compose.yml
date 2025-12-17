@@ -1,0 +1,7 @@
+services:
+  ezcpp:
+    ports:
+      - "24020:3000"
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
