@@ -1,0 +1,14 @@
+(lang dune 2.0)
+
+(name app)
+(authors "Jain Streak Dreamers")
+(maintainers "Jain Streak Dreamers")
+
+(generate_opam_files true)
+
+(package
+ (name app)
+ (synopsis "Jain Streak Dreamers")
+ (description "The road to Jain Streak")
+ (depends ocaml dune lwt (dream (>= 1.0.0~alpha8)) caqti-driver-sqlite3 ppx_yojson_conv argon2 fpath path_glob))
+

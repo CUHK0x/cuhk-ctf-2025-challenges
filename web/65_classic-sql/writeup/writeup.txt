@@ -1,0 +1,13 @@
+Players need to bypass the login page by classic SQL technique, such as 
+    -single quotation '
+    -comment "--"
+    -or 1=1
+    etc.
+Then they can get the first half flag: cuhk25ctf{SQL_1s_
+Then there is instruction asking players to modify the url "/search?q=<something>"
+
+They can use the same SQL injection techniques to do so.
+When the url is modified correctly, the second half will be shown: N0t_Th4t_HaRd_1o1}
+
+Note that a fake flag is given when they try to use something like "admin' --" for the username.
+

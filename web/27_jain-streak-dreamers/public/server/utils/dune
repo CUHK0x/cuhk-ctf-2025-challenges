@@ -1,0 +1,5 @@
+(library
+ (name utils)
+ (libraries argon2 dream doc)
+ (preprocess
+  (pps lwt_ppx)))

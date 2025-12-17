@@ -1,0 +1,5 @@
+(library
+ (name doc)
+ (libraries dream)
+ (preprocess
+  (pps ppx_yojson_conv)))

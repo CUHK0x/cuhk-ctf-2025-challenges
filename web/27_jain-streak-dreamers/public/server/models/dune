@@ -1,0 +1,5 @@
+(library
+ (name models)
+ (libraries caqti-driver-sqlite3 caqti-lwt doc utils)
+ (preprocess
+  (pps lwt_ppx ppx_yojson_conv)))

@@ -1,0 +1,21 @@
+services:
+  owo-db:
+    build:
+      context: ./db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: database
+  owo-server:
+    build:
+      context: ./server
+    ports:
+      - "25021:5000"
+    environment:
+      DB_HOST: owo-db
+      DB_NAME: database
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_PORT: 5432
+    depends_on:
+      - owo-db

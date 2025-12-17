@@ -1,0 +1,10 @@
+services:
+  web:
+    build:
+      context: ./youcanthackmelol/
+    ports:
+      - "25052:3000"
+    environment:
+      NODE_ENV: production
+    env_file:
+      - ".env"

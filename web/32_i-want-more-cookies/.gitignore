@@ -1,0 +1,37 @@
+# Bytecode and cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.egg-info/
+.cache/
+*.cache
+
+# Environment & secrets
+.env
+*.key
+*.pem
+*.log
+*.tmp
+*.db
+*.sqlite3
+*.flag.txt
+
+# Flask assets
+instance/
+
+# Editor / IDE
+.vscode/
+.idea/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Node (if frontend extras used)
+node_modules/
+
+# Challenge-private resources
+src/
+writeup/

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="upload-list-section" class="text-center">
+  <!-- Uploaded Files Section -->
+  <h1 class="text-2xl font-bold mb-4">Uploaded Files</h1>
+  <ul id="upload-list" class="space-y-2">
+    <!-- Uploaded files will be listed here -->
+    {% for upload in uploads %}
+    {% set target_path = "/" + request.endpoint + "/" + upload_id + "/" + route + "/" + upload %}
+    <li>
+      <a href="{{ target_path }}" class="text-blue-500 hover:underline">{{ upload }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<script>
+  document.getElementById('main-container').classList.remove('hidden');
+</script>
+
+{% endblock %}

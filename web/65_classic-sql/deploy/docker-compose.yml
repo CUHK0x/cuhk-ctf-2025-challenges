@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  sql-challenge:
+    build: .
+    container_name: sql-challenge
+    ports:
+      - "25065:8080"   # host:container
+    restart: unless-stopped
+    environment:
+    - PYTHONUNBUFFERED=1
+    - FLASK_SECRET_KEY=${FLASK_SECRET_KEY}
+
+    # volumes:
+    #   - ./data:/app/data   # uncomment if you want DB persistence outside container

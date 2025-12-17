@@ -1,0 +1,35 @@
+(library
+ (name templates)
+ (libraries dream)
+ (preprocess
+  (pps lwt_ppx)))
+
+(rule
+ (targets base.ml)
+ (deps base.eml.html)
+ (action
+  (run dream_eml %{deps} --workspace %{workspace_root})))
+
+(rule
+ (targets home.ml)
+ (deps home.eml.html)
+ (action
+  (run dream_eml %{deps} --workspace %{workspace_root})))
+
+(rule
+ (targets login.ml)
+ (deps login.eml.html)
+ (action
+  (run dream_eml %{deps} --workspace %{workspace_root})))
+
+(rule
+ (targets register.ml)
+ (deps register.eml.html)
+ (action
+  (run dream_eml %{deps} --workspace %{workspace_root})))
+
+(rule
+ (targets gallery.ml)
+ (deps gallery.eml.html)
+ (action
+  (run dream_eml %{deps} --workspace %{workspace_root})))

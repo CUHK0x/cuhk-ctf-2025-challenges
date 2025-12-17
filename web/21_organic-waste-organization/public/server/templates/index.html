@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="auth-section" class="text-center">
+  <!-- Login/Register Section -->
+  <div id="login-register" class="space-y-4">
+    <h2 id="login-register-title" class="text-xl font-bold">Login</h2>
+    <form id="login-form" class="space-y-4">
+      <input id="login-username" type="text" placeholder="Username"
+        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <input id="login-password" type="password" placeholder="Password"
+        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <p id="login-error" class="text-red-500 text-sm"></p>
+      <button id="login-button" type="submit"
+        class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Login</button>
+    </form>
+    <form id="register-form" class="space-y-4 hidden">
+      <input id="register-username" type="text" placeholder="Username"
+        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <input id="register-password" type="password" placeholder="Password"
+        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <button id="register-button" type="submit"
+        class="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600">Register</button>
+    </form>
+    <button id="toggle-auth" class="text-blue-500 hover:underline">Switch to Register</button>
+  </div>
+</div>
+<div id="upload-section" class="hidden text-center">
+  <!-- Upload Section -->
+  <h2 class="text-xl font-bold">Upload a TAR File</h2>
+  <form id="upload-form" class="space-y-4">
+    <input id="upload-file" type="file" accept=".tar"
+      class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+    <img id="captcha-image" src="" alt="CAPTCHA" class="mx-auto">
+    <input id="captcha-input" type="text" placeholder="Enter CAPTCHA"
+      class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+    <a id="upload-link" class="text-blue-500 text-sm hidden" target="_blank"></a>
+    <button id="upload-button" type="submit"
+      class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Upload</button>
+  </form>
+  <button id="logout-button" class="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 mt-4">Logout</button>
+</div>
+
+<script>
+  const loginForm = document.getElementById('login-form');
+  const registerForm = document.getElementById('register-form');
+
+  const authSection = document.getElementById('auth-section');
+  const uploadSection = document.getElementById('upload-section');
+  const loginRegisterTitle = document.getElementById('login-register-title');
+
+  const toggleAuthButton = document.getElementById('toggle-auth');
+  const loginButton = document.getElementById('login-button');
+  const registerButton = document.getElementById('register-button');
+  const logoutButton = document.getElementById('logout-button');
+  const uploadButton = document.getElementById('upload-button');
+  var captchaId = "";
+
+  async function checkLoginStatus() {
+    const response = await fetch('/api/me');
+    if (response.ok) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function updateUI() {
+    if (isLoggedIn) {
+      authSection.classList.add('hidden');
+      uploadSection.classList.remove('hidden');
+
+      captchaId = `owo_${Math.random().toString(36).substring(2, 15)}`;
+      document.getElementById('captcha-image').src = `/api/captcha?name=${captchaId}&length=100`;
+    } else {
+      authSection.classList.remove('hidden');
+      uploadSection.classList.add('hidden');
+    }
+  }
+
+  toggleAuthButton.addEventListener('click', () => {
+    if (loginForm.classList.contains('hidden')) {
+      loginForm.classList.remove('hidden');
+      registerForm.classList.add('hidden');
+      toggleAuthButton.textContent = 'Switch to Register';
+      loginRegisterTitle.textContent = 'Login';
+    } else {
+      loginForm.classList.add('hidden');
+      registerForm.classList.remove('hidden');
+      toggleAuthButton.textContent = 'Switch to Login';
+      loginRegisterTitle.textContent = 'Register';
+    }
+  });
+
+  loginButton.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    if (response.ok) {
+      isLoggedIn = true;
+    } else {
+      const errorText = await response.text();
+      document.getElementById('login-error').textContent = errorText;
+    }
+    updateUI();
+  });
+
+  registerButton.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('register-username').value;
+    const password = document.getElementById('register-password').value;
+    const response = await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    if (response.ok) {
+      alert('Registration successful! Please log in.');
+      loginForm.classList.remove('hidden');
+      registerForm.classList.add('hidden');
+      toggleAuthButton.textContent = 'Switch to Register';
+      loginRegisterTitle.textContent = 'Login';
+    } else {
+      const errorText = await response.text();
+      alert('Registration failed: ' + errorText);
+    }
+  });
+
+  logoutButton.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const response = await fetch('/api/logout', { method: 'POST' });
+    if (response.ok) {
+      isLoggedIn = false;
+      alert('Logged out successfully.');
+      updateUI();
+    } else {
+      const errorText = await response.text();
+      alert('Logout failed: ' + errorText);
+    }
+  });
+
+  uploadButton.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const fileInput = document.getElementById('upload-file');
+    const captchaInput = document.getElementById('captcha-input').value;
+    if (fileInput.files.length === 0) {
+      alert('Please select a file to upload.');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+    formData.append('captcha_id', captchaId);
+    formData.append('captcha_solution', captchaInput);
+
+    const uploadLink = document.getElementById('upload-link');
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData
+    });
+    if (response.ok) {
+      const uploadId = await response.text();
+      uploadLink.href = `/uploads/${uploadId}`;
+      uploadLink.textContent = `File uploaded successfully! Access it through here!`;
+      if (uploadLink.classList.contains('hidden')) {
+        uploadLink.classList.remove('hidden');
+      }
+    } else {
+      if (!uploadLink.classList.contains('hidden')) {
+        uploadLink.classList.add('hidden');
+      }
+      const errorText = await response.text();
+      alert('Upload failed: ' + errorText);
+    }
+
+    // Refresh CAPTCHA
+    document.getElementById('captcha-image').src = `/api/captcha?name=${captchaId}&length=100`;
+    document.getElementById('captcha-input').value = '';
+    fileInput.value = '';
+  });
+
+  checkLoginStatus().then((loggedIn) => {
+    isLoggedIn = loggedIn;
+    updateUI();
+    document.getElementById('main-container').classList.remove('hidden');
+  });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,36 @@
+let render username =
+<div class="flex flex-col items-center justify-center w-full">
+  <h1 class="text-3xl md:text-5xl font-bold text-orange-600 mt-8 mb-6 drop-shadow-lg">
+    Register, <span class="font-extrabold italic underline decoration-wavy decoration-orange-400">
+      <%s username %>
+    </span>!
+  </h1>
+  <form id="register-form" class="w-full max-w-sm bg-white rounded-lg shadow-md p-6 mb-8 flex flex-col gap-4">
+    <input id="register-username" type="text" name="username" placeholder="Username" class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" required>
+    <input id="register-password" type="password" name="password" placeholder="Password" class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" required>
+    <button type="submit" class="bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600 font-semibold">Register</button>
+    <p id="register-error" class="text-red-500 text-sm mt-2"></p>
+  </form>
+  <script>
+    document.getElementById('register-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const username = document.getElementById('register-username').value;
+      const password = document.getElementById('register-password').value;
+      const errorElem = document.getElementById('register-error');
+      errorElem.textContent = '';
+      const response = await fetch('/api/users/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await response.json();
+      if (data.error) {
+        errorElem.textContent = data.error;
+      } else {
+        alert('Registration successful!');
+        window.location.href = '/login';
+      }
+    });
+  </script>
+</div>
+

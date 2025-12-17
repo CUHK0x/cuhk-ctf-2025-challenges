@@ -1,0 +1,112 @@
+let render request username =
+<div class="flex flex-col items-center w-full mt-8">
+  <h1 class="text-3xl md:text-5xl font-bold text-orange-600 mt-8 mb-6 drop-shadow-lg">
+    Welcome, <span class="font-extrabold italic underline decoration-wavy decoration-orange-400">
+      <%s username %>
+    </span>!
+  </h1>
+  <h2 class="text-2xl md:text-4xl font-bold text-orange-600 mb-8">Gallery</h2>
+  <!-- Upload Section -->
+  <form id="upload-form" class="w-full max-w-2xl bg-white rounded-lg shadow-md p-6 mb-8 flex flex-col gap-4" enctype="multipart/form-data">
+    <label class="font-semibold text-gray-700 mb-2">Upload files (.txt, .jpg, .jpeg, .png, .gif only):</label>
+    <%s! Dream.csrf_tag request %>
+    <label for="upload-files" class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400">Select files</label> 
+    <input id="upload-files" type="file" name="files" multiple accept=".txt,.jpg,.jpeg,.png,.gif" class="sr-only" required>
+    <ul id="selected-files" class="mb-2 text-gray-700 list-disc list-inside bg-orange-50 rounded-md px-4 py-2 shadow-sm"></ul>
+    <button type="submit" class="bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600 font-semibold">Upload</button>
+    <p id="upload-error" class="text-red-500 text-sm mt-2"></p>
+  </form>
+  <!-- Search Bar -->
+  <div class="w-full max-w-2xl flex flex-row items-center mb-6 gap-2">
+    <input id="gallery-search" type="text" placeholder="Search files..." class="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" />
+    <button id="gallery-search-btn" class="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 font-semibold">Search</button>
+  </div>
+  <div id="gallery-list" class="w-full max-w-2xl flex flex-col gap-4"></div>
+  <script>
+    // Display selected files
+    const input = document.getElementById('upload-files');
+    const selectedFiles = document.getElementById('selected-files');
+    input.addEventListener('change', () => {
+      selectedFiles.innerHTML = '';
+      Array.from(input.files).forEach(file => {
+        const li = document.createElement('li');
+        li.textContent = file.name;
+        li.className = "py-1 px-2 rounded text-orange-700 bg-white hover:bg-orange-100 transition-colors duration-150";
+        selectedFiles.appendChild(li);
+      });
+    });
+
+    // Upload handler
+    document.getElementById('upload-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const input = document.getElementById('upload-files');
+      const errorElem = document.getElementById('upload-error');
+      errorElem.textContent = '';
+      const allowed = ["txt","jpg","jpeg","png","gif"];
+      const files = Array.from(input.files);
+      if (files.length === 0) {
+        errorElem.textContent = 'Please select at least one file.';
+        return;
+      }
+      for (const file of files) {
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (!allowed.includes(ext)) {
+          errorElem.textContent = `File type not allowed: ${file.name}`;
+          return;
+        }
+      }
+      const formData = new FormData();
+      files.forEach(f => formData.append('files', f));
+      formData.append("dream.csrf", document.getElementsByName("dream.csrf")[0].value);
+      const res = await fetch('/api/uploads', {
+        method: 'POST',
+        body: formData
+      });
+      if (res.ok) {
+        errorElem.textContent = '';
+        const searchVal = document.getElementById('gallery-search').value;
+        fetchFiles(searchVal); // Refresh gallery
+      } else {
+        errorElem.textContent = await res.text();
+      }
+    });
+    // Gallery fetch
+    async function fetchFiles(searchTerm = "") {
+      let url = '/api/uploads';
+      if (searchTerm && searchTerm.trim() !== "") {
+        url = `/api/uploads/${encodeURIComponent(searchTerm)}`;
+      }
+      url = `${url}?mode=query`;
+      const res = await fetch(url);
+      const files = await res.json();
+      const gallery = document.getElementById('gallery-list');
+      gallery.innerHTML = '';
+      (files['filenames'] || []).forEach(file => {
+        const ext = file.split('.').pop().toLowerCase();
+        let icon = '';
+        if (["txt"].includes(ext)) {
+          icon = `<svg class='w-6 h-6 text-blue-500' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M4 16V4a2 2 0 012-2h8a2 2 0 012 2v12m-6 4h6a2 2 0 002-2V8a2 2 0 00-2-2H8a2 2 0 00-2 2v10a2 2 0 002 2z'/></svg>`;
+        } else if (["jpg","jpeg","png","gif"].includes(ext)) {
+          icon = `<svg class='w-6 h-6 text-green-500' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><rect width='20' height='14' x='2' y='5' rx='2'/><circle cx='8' cy='11' r='3'/><path d='M2 19l6-6a2 2 0 012.83 0l6 6'/></svg>`;
+        } else {
+          icon = `<svg class='w-6 h-6 text-gray-400' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><rect width='20' height='14' x='2' y='5' rx='2'/><path d='M2 19l6-6a2 2 0 012.83 0l6 6'/></svg>`;
+        }
+        const row = document.createElement('div');
+        row.className = "flex items-center bg-white rounded-lg px-4 py-3 transition-all duration-200 hover:shadow-lg hover:translate-x-2";
+        row.innerHTML = `
+          <span class='mr-4'>${icon}</span>
+          <span class='flex-1 font-medium text-gray-800'>${file}</span>
+          <a href='/api/uploads/${file}?mode=download' target='_blank' class='ml-4 bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 font-semibold transition-colors duration-150'>Request</a>
+        `;
+        gallery.appendChild(row);
+      });
+    }
+    fetchFiles();
+    // Search handler
+    document.getElementById('gallery-search-btn').addEventListener('click', function(e) {
+      e.preventDefault();
+      const searchVal = document.getElementById('gallery-search').value;
+      fetchFiles(searchVal);
+    });
+  </script>
+</div>

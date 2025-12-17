@@ -1,0 +1,45 @@
+let render username =
+<div class="flex flex-col items-center justify-center w-full">
+  <h1 class="text-3xl md:text-5xl font-bold text-orange-600 mt-8 mb-6 drop-shadow-lg">
+    Hello, <span class="font-extrabold italic underline decoration-wavy decoration-orange-400">
+      <%s username %>
+    </span>!
+  </h1>
+  <div class="w-full max-w-xl relative overflow-hidden rounded-lg shadow-lg">
+    <div id="slideshow" class="w-full h-64 flex items-center justify-center bg-gray-200">
+      <img id="slide-img" src="/static/img/slide1.jpg" class="object-cover w-full h-full transition-all duration-700"
+        alt="Slideshow image">
+    </div>
+    <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2" id="slide-dots">
+      <span class="w-3 h-3 bg-orange-400 rounded-full inline-block opacity-80"></span>
+      <span class="w-3 h-3 bg-gray-400 rounded-full inline-block opacity-50"></span>
+      <span class="w-3 h-3 bg-gray-400 rounded-full inline-block opacity-50"></span>
+    </div>
+  </div>
+  <script>
+    const images = [
+      '/static/img/slide1.jpg',
+      '/static/img/slide2.jpg',
+      '/static/img/slide3.jpg'
+    ];
+    // Preload images
+    const preloaded = images.map(src => {
+      const i = new Image();
+      i.src = src;
+      return i;
+    });
+    let current = 0;
+    const img = document.getElementById('slide-img');
+    const dots = document.getElementById('slide-dots').children;
+    setInterval(() => {
+      current = (current + 1) % images.length;
+      img.src = preloaded[current].src;
+      for (let i = 0; i < dots.length; i++) {
+        dots[i].classList.remove('bg-orange-400', 'opacity-80');
+        dots[i].classList.add('bg-gray-400', 'opacity-50');
+      }
+      dots[current].classList.remove('bg-gray-400', 'opacity-50');
+      dots[current].classList.add('bg-orange-400', 'opacity-80');
+    }, 2500);
+  </script>
+</div>

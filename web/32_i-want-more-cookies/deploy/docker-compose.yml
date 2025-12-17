@@ -1,0 +1,5 @@
+services:
+  i-want-more-cookies:
+    build: .
+    ports:
+      - 25032:25032

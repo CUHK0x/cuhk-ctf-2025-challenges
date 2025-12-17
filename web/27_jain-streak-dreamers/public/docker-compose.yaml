@@ -1,0 +1,6 @@
+services:
+  jain-streak-dreamers:
+    build: .
+    ports:
+      - "25027:8080"
+      

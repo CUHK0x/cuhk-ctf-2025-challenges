@@ -1,0 +1,6 @@
+(executable
+ (name app)
+ (flags :standard -cclib -largon2)
+ (libraries dream caqti-driver-sqlite3 api views)
+ (preprocess
+  (pps lwt_ppx)))
