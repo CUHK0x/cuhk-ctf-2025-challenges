@@ -1,0 +1,133 @@
+// approximate instruction by instruction translation
+
+MAIN: // START=1000
+
+// initialize p=1
+dup // START=1000 curr=1000
+push 1 // curr=1000 p=1
+push 2 // curr=1000 p=1 2
+push 1 // curr=1000 p=1 2 1
+roll // p=1 curr=1000
+
+CURRLOOP: // p=1 curr=1000
+
+// check if curr is finished
+dup // p=1 curr=1000 curr=1000
+not // p=1 curr=1000 !curr
+switch // p=1 curr=1000
+    case 0: // ie curr is not finished
+        // add 1 to p
+        push 2 // p=1 curr=1000 2
+        push 1 // p=1 curr=1000 2 1
+        roll // curr=1000 p=1
+        push 1 // curr=1000 p=1 1
+        add // curr=1000 p=2
+        push 2 // curr=1000 p=2 s=2
+
+        REMLOOP: // curr=1000 p=2 s=2
+        // duplicate p and s and position them
+        dup // curr=1000 p=2 s=2 s=2
+        push 3 // curr=1000 p=2 s=2 s=2 3
+        push 2 // curr=1000 p=2 s=2 s=2 3 2
+        roll // curr=1000 s=2 s=2 p=2
+        dup // curr=1000 s=2 s=2 p=2 p=2
+        push 4 // curr=1000 s=2 s=2 p=2 p=2 4
+        push 3 // curr=1000 s=2 s=2 p=2 p=2 4 3
+        roll // curr=1000 s=2 p=2 p=2 s=2
+
+        // check if p % s == 0
+        mod // curr=1000 s=2 p=2 r=p%s
+        not // curr=1000 s=2 p=2 !r
+        switch // curr=1000 s=2 p=2
+            case 0: // there was remainder
+                // add 1 to s and continue
+                push 2 // curr=1000 s=2 p=2 2
+                push 1 // curr=1000 s=2 p=2 2 1
+                roll // curr=1000 p=2 s=2
+                push 1 // curr=1000 p=2 s=2 1
+                add // curr=1000 p=2 s=3
+                goto REMLOOP
+            case 1: // no remainder
+                break
+        // curr=1000 s=2 p=2
+        // check if s == p
+        dup // curr=1000 s=2 p=2 p=2
+        push 3 // curr=1000 s=2 p=2 p=2 3
+        push 1 // curr=1000 s=2 p=2 p=2 3 1
+        roll // curr=1000 p=2 s=2 p=2
+        sub // curr=1000 p=2 s-p
+        not // curr=1000 p=2 !(s-p)
+        push 2 // curr=1000 p=2 !(s-p) 2
+        push 1 // curr=1000 p=2 !(s-p) 2 1
+        roll // curr=1000 !(s-p) p=2
+        push 3 // curr=1000 !(s-p) p=2 3
+        push 1 // curr=1000 !(s-p) p=2 3 1
+        roll // p=2 curr=1000 !(s-p)
+        not // p=2 curr=1000 s==p
+        switch // p=2 curr=1000
+            case 1: // not equal, not prime, find next p
+                goto CURRLOOP
+            case 0: // equal, is prime, subtract 1 from curr and continue
+                push 1 // p=2 curr=1000 1
+                sub // p=2 curr=999
+                goto CURRLOOP
+    case 1: // ie curr is finished, p=2 curr=0
+        pop // curr p
+
+        RANGEFIX: // curr p
+
+        push 2 // curr p 2
+        push 5 // curr p 2 5
+        mul // curr p 10
+        dup // curr p 10 10
+        mul // curr p 100
+        mod // curr r=p%100
+        dup // curr r r
+        push 2 // curr r r 2
+        dup // curr r r 2 2
+        dup // curr r r 2 2 2
+        mul // curr r r 2 4
+        dup // curr r r 2 4 4
+        mul // curr r r 2 16
+        mul // curr r r 32
+        greater  // curr r r>32
+        switch // curr r
+            case 0: // r <= 32
+                push 5 // curr r 5
+                add // curr r+5
+                dup // curr r r
+                mul // curr r^2
+                goto RANGEFIX
+            case 1: // r > 32
+                break
+        out // START
+
+        // increment START by 576
+        push 4 // START 4
+        push 6 // START 4 6
+        mul // START 24
+        dup // START 24 24
+        mul // START 576
+        add // START
+
+        // check if START > 50625
+        dup // START START
+        push 2 // START START 3
+        dup // START START 3 3
+        push 5 // START START 3 3 5
+        mul // START START 3 15
+        dup // START START 3 15 15
+        dup // START START 3 15 15 15
+        mul // START START 3 15 225
+        mul // START START 3 3375
+        push 5 // START START 3 3375 5
+        mul // START START 3 16875
+        mul // START START 50625
+        greater // START 50625
+        switch // START
+            case 0: // START <= 50625
+                goto MAIN
+            case 1: // START > 50625
+                END
+
+                

@@ -1,0 +1,1 @@
+print(((__import__('numpy').array(list(map(ord, open('flag.txt', 'r').read().strip()))).reshape((-1, 2))[:, __import__('numpy').newaxis, :] - __import__('numpy').array(list(map(ord, open('flag.txt', 'r').read().strip()))).reshape((-1, 2))[__import__('numpy').newaxis, :, :])**2).sum(axis=2).tolist(), end='')

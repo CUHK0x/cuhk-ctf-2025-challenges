@@ -1,0 +1,25 @@
+ORBIT
+DOCK iss
+COMM
+Uhhh we're proceeding the target, over.
+OUT
+COMM
+No, negative, nothing.
+OUT
+COMM
+We're on course, on time and on target. Everything's fine, how are you?
+OUT
+COMM
+This is Major Tom to Ground Control
+I'm stepping through the door
+And I'm floating in a most peculiar way
+And the stars look very different today
+For here
+OUT
+COMM
+Here am I floating 'round my tin can
+Far above the moon
+Planet Earth is blue
+And there's nothing I can do
+OUT
+FLAG

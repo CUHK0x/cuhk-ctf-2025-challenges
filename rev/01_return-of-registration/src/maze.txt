@@ -1,0 +1,29 @@
+###########################
+#Sdddddddddddd            #
+# # #########s########### #
+# #    ######s#wdd#wdd#   #
+# # #########s#w#s#w#s#####
+# # ####aaaaas#w#s#w#sdddd#
+# # ####s######w#s#w#####s#
+# # ####sddddddd#s#w#  ##s#
+# # ######### ###s#w# ###s#
+# #         # ###s#w#   #s#
+# ########### ###sdd### #s#
+# #           ########  #s#
+# # ###############    ##s#
+# # #               #####s#
+# ####################  #s#
+#                      ##s#
+#########################s#
+
+dddddddd
+ddddssss
+aaaaassd
+ddddddww
+wwddssss
+sssddwww
+wwwwddss
+ddddssss
+sssssss
+
+ddddddddddddssssaaaaassdddddddwwwwddsssssssddwwwwwwwddssddddsssssssssss

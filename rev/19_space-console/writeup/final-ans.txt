@@ -1,0 +1,85 @@
+T=-120s
+CHECK system
+Thrusters ready.
+Inertial navigation systems normal.
+Hydraulic systems normal.
+CHECK ground status
+Ground status normal.
+T=-60s
+CHECK comms
+Comms Check OK.
+CHECK ground launch auth
+Launch authority granted.
+LAUNCH
+Launch Confirmed.
+T=-15s
+COUNTDOWN
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+Booster ignited.
+1km
+5km
+10km
+20km
+50km
+100km
+DETACH booster stage 1
+150km
+200km
+300km
+DETACH booster stage 2
+325km
+SHUTDOWN thrusters
+340km
+Approaching orbit altitude...
+ORBIT
+Switching to orbit mode...
+In orbital speed.
+DOCK iss
+Docking...
+Docked to ISS.
+Ground: Status number 1
+COMM
+Uhhh we're proceeding the target, over.
+OUT
+Ground: Number 3, anything?
+COMM
+No, negative, nothing.
+OUT
+Ground: Rodger that.
+Ground: Hey, what's your status?
+COMM
+We're on course, on time and on target. Everything's fine, how are you?
+OUT
+Ground: This is Ground Control to Major Tom
+Ground: You've really made the grade
+Ground: And the papers want to know whose shirts you wear
+Ground: Now it's time to leave the capsule if you dare
+COMM
+This is Major Tom to Ground Control
+I'm stepping through the door
+And I'm floating in a most peculiar way
+And the stars look very different today
+For here
+OUT
+Ground: Ground Control to Major Tom
+Ground: Your circuit's dead, there's something wrong
+Ground: Can you hear me, Major Tom?
+Ground: Can you hear me, Major Tom?
+Ground: Can you hear me, Major Tom? Can you-
+COMM
+Here am I floating 'round my tin can
+Far above the moon
+Planet Earth is blue
+And there's nothing I can do
+OUT
+FS: At least you got the flag.
+FLAG

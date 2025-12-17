@@ -1,0 +1,10 @@
+services:
+  return-of-registration:
+    build: .
+    ports:
+      - 25001:1337
+    networks:
+      - default
+
+networks:
+  default:
