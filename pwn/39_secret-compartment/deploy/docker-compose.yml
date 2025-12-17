@@ -1,0 +1,5 @@
+services:
+  secret-compartment:
+    build: .
+    ports:
+      - 25039:3000
