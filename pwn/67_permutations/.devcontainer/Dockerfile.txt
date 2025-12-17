@@ -1,0 +1,20 @@
+# replace this with your target environment!
+FROM ubuntu@sha256:9cbed754112939e914291337b5e554b07ad7c392491dba6daf25eef1332a22e8
+
+# Install basic build tools, pwntools, patchelf
+RUN apt-get update -y && apt-get install -y \
+    python3 python3-pip python3-dev git libssl-dev libffi-dev build-essential \
+    python3-pwntools python-pwntools-doc \
+    ltrace strace \
+    libc6-dbg \
+    patchelf \
+    ruby-full
+
+# Install pwndbg
+RUN curl -qsL 'https://install.pwndbg.re' | sh -s -- -t pwndbg-gdb
+
+# Install ROPgadget and the cli version of angr (angr library requires using a virtual environment)
+RUN apt-get install -y pipx && pipx install ropgadget angr
+
+# Install one_gadget & seccomp-tools
+RUN gem install one_gadget seccomp-tools

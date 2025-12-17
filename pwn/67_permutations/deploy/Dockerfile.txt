@@ -1,0 +1,18 @@
+# Build this Dockerfile in the challenge root.
+
+# ubuntu:latest (7/9/2025)
+FROM ubuntu@sha256:9cbed754112939e914291337b5e554b07ad7c392491dba6daf25eef1332a22e8
+
+RUN apt-get update && \ 
+	apt-get install -y socat && \
+	rm -rf /var/lib/apt/lists/*
+
+RUN useradd -m ctf
+WORKDIR /home/ctf/
+COPY src/chall .
+COPY deploy/bin/start.sh .
+RUN chmod +x start.sh
+COPY flag.txt .
+
+EXPOSE 3000/tcp
+CMD ["socat", "-d2", "TCP-LISTEN:3000,fork,reuseaddr", "EXEC:/home/ctf/start.sh,su=ctf,stderr"]

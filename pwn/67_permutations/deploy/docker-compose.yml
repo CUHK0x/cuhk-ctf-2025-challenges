@@ -1,0 +1,7 @@
+services:
+  permutations:
+    ports:
+      - "24067:3000"
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
