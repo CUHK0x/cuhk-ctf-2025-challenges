@@ -1,0 +1,10 @@
+services:
+  babi_rop_revenge:
+    build: .
+    ports:
+      - 25070:9999
+    networks:
+      - default
+
+networks:
+  default:
