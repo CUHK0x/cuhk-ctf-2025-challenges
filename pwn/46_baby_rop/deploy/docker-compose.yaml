@@ -1,0 +1,10 @@
+services:
+  baby_rop:
+    build: .
+    ports:
+      - 25046:9999
+    networks:
+      - default
+
+networks:
+  default:
