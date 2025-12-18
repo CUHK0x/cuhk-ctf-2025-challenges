@@ -1,0 +1,10 @@
+services:
+  babi_rop:
+    build: .
+    ports:
+      - 25047:9999
+    networks:
+      - default
+
+networks:
+  default:
