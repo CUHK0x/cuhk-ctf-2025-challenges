@@ -1,0 +1,10 @@
+services:
+  escape-me-quick:
+    build: .
+    ports:
+      - 25048:9999
+    networks:
+      - default
+
+networks:
+  default:

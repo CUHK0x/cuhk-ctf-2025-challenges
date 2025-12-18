@@ -1,0 +1,139 @@
+diff --git a/Makefile b/Makefile
+index 3b1c745..d1a4c85 100644
+--- a/Makefile
++++ b/Makefile
+@@ -241,7 +241,7 @@ all: $(OBJDIR) $(OBJDIR)/quickjs.check.o $(OBJDIR)/qjs.check.o $(PROGS)
+ 
+ QJS_LIB_OBJS=$(OBJDIR)/quickjs.o $(OBJDIR)/dtoa.o $(OBJDIR)/libregexp.o $(OBJDIR)/libunicode.o $(OBJDIR)/cutils.o $(OBJDIR)/quickjs-libc.o
+ 
+-QJS_OBJS=$(OBJDIR)/qjs.o $(OBJDIR)/repl.o $(QJS_LIB_OBJS)
++QJS_OBJS=$(OBJDIR)/qjs.o $(QJS_LIB_OBJS)
+ 
+ HOST_LIBS=-lm -ldl -lpthread
+ LIBS=-lm -lpthread
+diff --git a/qjs.c b/qjs.c
+index a88e39a..83a9720 100644
+--- a/qjs.c
++++ b/qjs.c
+@@ -43,8 +43,8 @@
+ #include "cutils.h"
+ #include "quickjs-libc.h"
+ 
+-extern const uint8_t qjsc_repl[];
+-extern const uint32_t qjsc_repl_size;
++// extern const uint8_t qjsc_repl[];
++// extern const uint32_t qjsc_repl_size;
+ 
+ static int eval_buf(JSContext *ctx, const void *buf, int buf_len,
+                     const char *filename, int eval_flags)
+@@ -108,8 +108,8 @@ static JSContext *JS_NewCustomContext(JSRuntime *rt)
+     if (!ctx)
+         return NULL;
+     /* system modules */
+-    js_init_module_std(ctx, "std");
+-    js_init_module_os(ctx, "os");
++    // js_init_module_std(ctx, "std");
++    // js_init_module_os(ctx, "os");
+     return ctx;
+ }
+ 
+@@ -327,6 +327,11 @@ int main(int argc, char **argv)
+     int strip_flags = 0;
+     size_t stack_size = 0;
+ 
++    setbuf(stdout,NULL);
++    setbuf(stdin,NULL);
++
++    srand((unsigned) time(NULL));
++
+     /* cannot use getopt because we want to pass the command line to
+        the script */
+     optind = 1;
+@@ -504,7 +509,8 @@ int main(int argc, char **argv)
+         }
+         if (interactive) {
+             JS_SetHostPromiseRejectionTracker(rt, NULL, NULL);
+-            js_std_eval_binary(ctx, qjsc_repl, qjsc_repl_size, 0);
++            // js_std_eval_binary(ctx, qjsc_repl, qjsc_repl_size, 0);
++            exit(1);
+         }
+         js_std_loop(ctx);
+     }
+diff --git a/qjsc.c b/qjsc.c
+index e55ca61..5d35371 100644
+--- a/qjsc.c
++++ b/qjsc.c
+@@ -600,8 +600,8 @@ int main(int argc, char **argv)
+     memset(&dynamic_module_list, 0, sizeof(dynamic_module_list));
+ 
+     /* add system modules */
+-    namelist_add(&cmodule_list, "std", "std", 0);
+-    namelist_add(&cmodule_list, "os", "os", 0);
++    // namelist_add(&cmodule_list, "std", "std", 0);
++    // namelist_add(&cmodule_list, "os", "os", 0);
+ 
+     optind = 1;
+     while (optind < argc && *argv[optind] == '-') {
+diff --git a/quickjs-libc.c b/quickjs-libc.c
+index 54a7a15..74250ed 100644
+--- a/quickjs-libc.c
++++ b/quickjs-libc.c
+@@ -4073,8 +4073,8 @@ void js_std_add_helpers(JSContext *ctx, int argc, char **argv)
+ 
+     JS_SetPropertyStr(ctx, global_obj, "print",
+                       JS_NewCFunction(ctx, js_print, "print", 1));
+-    JS_SetPropertyStr(ctx, global_obj, "__loadScript",
+-                      JS_NewCFunction(ctx, js_loadScript, "__loadScript", 1));
++    // JS_SetPropertyStr(ctx, global_obj, "__loadScript",
++    //                   JS_NewCFunction(ctx, js_loadScript, "__loadScript", 1));
+ 
+     JS_FreeValue(ctx, global_obj);
+ }
+diff --git a/quickjs.c b/quickjs.c
+index b93e282..45fb83d 100644
+--- a/quickjs.c
++++ b/quickjs.c
+@@ -40680,6 +40680,35 @@ exception:
+     return JS_EXCEPTION;
+ }
+ 
++static JSValue js_array_oob(JSContext *ctx, JSValueConst this_val,
++                           int argc, JSValueConst *argv)
++{
++    JSValue obj, ret, *arrp;
++    int64_t idx;
++    uint32_t count;
++
++    obj = JS_ToObject(ctx, this_val);
++
++    if (argc < 1 || argc > 2) goto exception;
++    if(!js_get_fast_array(ctx, obj, &arrp, &count))
++        goto exception;
++    if (JS_ToInt64Sat(ctx, &idx, argv[0]))
++        goto exception;
++
++    if (argc == 1) {
++		ret = JS_DupValue(ctx, arrp[idx]);
++    } else {
++		set_value(ctx, &arrp[idx], JS_DupValue(ctx, argv[1]));
++        ret = JS_UNDEFINED;
++    }
++    JS_FreeValue(ctx, obj);
++	return ret;
++
++exception:
++    JS_FreeValue(ctx, obj);
++    return JS_EXCEPTION;
++}
++
+ #define special_every    0
+ #define special_some     1
+ #define special_forEach  2
+@@ -42198,6 +42227,7 @@ static const JSCFunctionListEntry js_iterator_proto_funcs[] = {
+ 
+ static const JSCFunctionListEntry js_array_proto_funcs[] = {
+     JS_CFUNC_DEF("at", 1, js_array_at ),
++    JS_CFUNC_DEF("oob", 1, js_array_oob),
+     JS_CFUNC_DEF("with", 2, js_array_with ),
+     JS_CFUNC_DEF("concat", 1, js_array_concat ),
+     JS_CFUNC_MAGIC_DEF("every", 1, js_array_every, special_every ),
