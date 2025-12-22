@@ -1,7 +1,7 @@
 # CUHK CTF 2025
 
 ## Description
-Below is the challenges in CUHK CTF 2025 held on 26-28 September. Writeups are redacted until the writeup workshop.
+Below are the challenges in CUHK CTF 2025 held on 26-28 September. Writeups are redacted until the writeup workshop.
 
 ## Folder Structure Explanation
 Challenge folders are placed under their corresponding categories (`crypto`, `forens`, `misc`, `pwn`, `rev`, `web`, `cloud`). Under each challenge folder, `public` folder represents the materials given to the participants. `deploy` folder contains secrets used during deployment in the challenge server. `README.md` contains challenge description and necessary challenge info. There is also a `[id]_flag.txt` for the flag used in the challenge.
